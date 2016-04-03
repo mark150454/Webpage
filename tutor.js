@@ -2,11 +2,16 @@ var moveCount = 0;
 //Test addition
 //Engine has finished calculating
 var onReady = function (moves){
+    
     if (moveCount == 1)
         {
             beginOutput(response_startMove());
             return;
-        }
+        } 
+    
+    beginOutput("You should move your " + modePiece(moves));
+    
+        
     
 };
 
@@ -19,6 +24,7 @@ function beginOutput(response)
 {
     //60ms per letter
     var typeTime = response.length * 40;
+    if (typeTime <  1500) {typeTime = 1500;}
     isTyping();
     setTimeout(pushResponse, typeTime, response);
 };
@@ -30,6 +36,66 @@ function pushResponse(message){
     document.getElementById("response").innerHTML = message;
     var d = new Date();
     document.getElementById("typing").innerHTML = "Last message recieved at" + d.toLocaleTimeString();
+};
+
+function modePiece(moves){
+    //PRNBQK
+    console.log("doing");
+    var pieceCount = [0, 0, 0, 0, 0, 0];
+    for (i = 0; i < moves.length; i++)
+        {
+            switch(moves[i]['from']) {
+                case 'Pawn':
+                    pieceCount[0]++;
+                    break;
+                case 'Rook':
+                    pieceCount[1]++;
+                    break;
+                case 'Knight':
+                    pieceCount[2]++;
+                    break;
+                case 'Bishop':
+                    pieceCount[3]++;
+                    break;
+                case 'Queen':
+                    pieceCount[4]++;
+                    break;
+                case 'King':
+                    pieceCount[5]++;
+                    break;
+            }
+            
+        }
+    
+    var best = 0;
+    for (i = 0; i < 6; i++)
+        {
+            if(pieceCount[i] > best)
+                {
+                    best = i;
+                }
+        }
+    
+    switch(best){
+        case 0:
+            return 'Pawn';
+            break;
+        case 1:
+            return 'Rook';
+            break;
+        case 2:
+            return 'Knight';
+            break;
+        case 3:
+            return 'Bishop';
+            break;
+        case 4:
+            return 'Queen';
+            break;
+        case 5:
+            return 'King';
+            break;
+    };
 };
 
 function response_startMove(){
