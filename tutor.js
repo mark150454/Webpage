@@ -8,6 +8,7 @@ var onReady = function (moves){
             return;
         } 
     
+    //Take with your X or move your X to a better position
     beginOutput("You should move your " + modePiece(moves));
     
         
