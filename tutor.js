@@ -1,5 +1,4 @@
 var moveCount = 0;
-//Test addition
 //Engine has finished calculating
 var onReady = function (moves){
     
