@@ -8,16 +8,32 @@
         <script src="board/js/prettify.js"></script>
         <script type="text/javascript" src="board/js/chessboard.js"></script>
         <script type="text/javascript" src="board/js/chess.js"></script>
+        <script type="text/javascript" src="tutor.js"></script>
         <script type="text/javascript" src="boardconfig.js"></script>
-        <script type="text/javascript" src="stockfishInterface.js"></script>
+        
+        <style>
+        
+        </style>
+        
         
 	</head>
     
 	<body>
 		<h1>Chess is mega</h1>
-        <div id="board" style="width: 400px"></div>
+        <button onclick="printMoves()">Click me</button>
         
-        <button id="ask">Ask Stockfish</button>
-        <button id="show">Show</button>
+        <table stype="width:80%">
+            <tr>
+                <td><div id="board" style="width: 400px"></div></td>
+                <td><p id="response"></p></td>
+            </tr>
+                <td></td>
+                <td><p id="typing"></p></td>
+        </table>
+        
+        <p id="output"></p>
+        
+
+        
 	</body>
 </html>
