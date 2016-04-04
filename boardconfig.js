@@ -87,8 +87,9 @@ var init = function () {
             // check?
             if (game.in_check() === true) {
                 status += ', ' + moveColor + ' is in check';
-                console.log('Toggling check');
-                toggleCheck();
+                console.log('User is in check');
+                toggleCheck(true);
+                console.log('Check value: ' + inCheck ? 'true' : 'false');
             } 
             console.log('Calling bestMove');
             bestMove();}
