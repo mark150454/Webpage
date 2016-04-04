@@ -1,8 +1,21 @@
 <!DOCTYPE html>
-<meta charset="UTF-8">
 <html>
 	<head>
-        <link rel="stylesheet" type="text/css" href="board/css/chessboard.css">
+		<!-- META -->
+		<meta charset="UTF-8">
+		<meta name="description" content="ChessTutor' Group16"/>
+		<meta name="keywords" content="Chess, Tutor, Multiplayer, Science, WebDesign"/>
+		<meta name="robots" content="nofollow"/>
+		<meta name="author" content="Henry Wallis"/>
+		<!-- META FINISH -->
+
+		<title>Chess Tutor | Play &amp; Learn</title>
+		<link rel="stylesheet" type="text/css" href="css/stylesheet.css" />
+		<link rel="shortcut icon" href="img/iconHorse.png" type="image/png" />
+		
+		<!--Chess Integration-->
+		
+		<link rel="stylesheet" type="text/css" href="board/css/chessboard.css">
         <script src="board/js/json3.min.js"></script>
         <script src="board/js/jquery-1.10.1.min.js"></script>
         <script src="board/js/prettify.js"></script>
@@ -10,30 +23,113 @@
         <script type="text/javascript" src="board/js/chess.js"></script>
         <script type="text/javascript" src="tutor.js"></script>
         <script type="text/javascript" src="boardconfig.js"></script>
-        
-        <style>
-        
-        </style>
-        
-        
+
 	</head>
-    
+
 	<body>
-		<h1>Chess is mega</h1>
-        <button onclick="printMoves()">Click me</button>
-        
-        <table stype="width:80%">
+		<header class="mainHeadTop">
+			<div class="headerContainer">
+
+					<div class="navItems">
+						<ul>
+							<li><a href="#">Play</a></li>
+							<li><a href="#">Rules</a></li>
+							<li><a href="#">Contact</a></li>
+						</ul>
+					</div>
+
+					<a href="index.html" id="logoMain"></a>
+					
+					<ul class="social-Icons">
+						<a href="#" class="button">Help</a>
+						<li class="social-Icon"><a href="#" id="Fb"></a></li>
+						<li class="social-Icon"><a href="#" id="Tw"></a></li>
+						<li class="social-Icon"><a href="#" id="Gp"></a></li>
+					</ul>
+				</div>
+		</header>
+		
+		<div class="headerBanner">
+			<div class="bannerItems">
+				<h1>Learn Chess From People<br /> Around The World</h1>
+				<div class="bannerButton">
+					<a href="#" class="button2">Find Out More</a>
+					<a href="#" class="button2">Contact Us</a>
+				</div>
+			</div>
+		</div>
+		<div class="wrapper">
+		
+			<section class="textSection">
+				<img src="img/SectionItem.jpg" alt="Chess" />
+				<h3><q>Chess Tutor has over 12,000 players currently online and over 30,000 members. Play Chess against others with the help from players ranging from beginners to Grandmasters!</q></h6>
+				<a href="#" class="buttonText">Play Chess Now</a>
+			</section>
+			<section class="textSection" id="difftextSection">
+				<img src="img/SectionItem.jpg" alt="Chess" />
+				<h3><q>Chess Tutor has over 12,000 players currently online and over 30,000 members. Play Chess against others with the help from players ranging from beginners to Grandmasters!</q></h6>
+				<a href="#" class="buttonText">Play Chess Now</a>
+			</section>
+			<section class="textSection">
+				<img src="img/SectionItem.jpg" alt="Chess" />
+				<h3><q>Chess Tutor has over 12,000 players currently online and over 30,000 members. Play Chess against others with the help from players ranging from beginners to Grandmasters!</q></h6>
+				<a href="#" class="buttonText">Play Chess Now</a>
+			</section>
+
+			<div class="chessSection">
+			
+			
+			<!-- chess board testing here -->
+			<!-- Sorry for the Table element, Henry -->
+			<table stype="width:80%">
             <tr>
                 <td><div id="board" style="width: 400px"></div></td>
                 <td><p id="response"></p></td>
             </tr>
                 <td></td>
                 <td><p id="typing"></p></td>
-        </table>
-        
-        <p id="output"></p>
-        
+			</table>
+			</div>
+			 <!-- <section class="boxSection">
+				<div class="boxSectionInner">
+					<h2>Explore Chess Tutor</h2>
 
-        
+
+
+					 <div class="box">
+						<img src="img/box/tactics.jpg" alt="Rules &amp; Tactics" />
+						<h4>Rules &amp; Tactics</h4>
+						<p>Get to grips with Chess by learning the rules</p>
+					</div>
+
+					<div class="box">
+						<img src="img/box/tactics.jpg" alt="Information" />
+						<h4>Information</h4>
+						<p>Chess Tutor was founded by 7 computer-oritneted University Students.</p>
+					</div>
+
+					<div class="box">
+						<img src="img/box/tactics.jpg" alt="Contact Us" />
+						<h4>Contact Us</h4>
+						<p>Please feel free to contact us either through email or other communication methods - We'd love to hear your feedback!</p>
+					
+
+				</div> 
+			</section>
+		</div> -->
+		<div class="clearfooter"></div>
+		<footer class="footerWrap">
+			<!-- <h4>Join our mailiing list</h4>
+			<p>Sign up to recieve updates about Chess Tutor, events, freebies, and much more</p> -->
+			<ul class="footerNav">
+				<li><a href="#">Home</a></li>
+				<li><a href="#">Play</a></li>
+				<li><a href="#">Rules</a></li>
+				<li><a href="#">Contact</a></li>
+
+			</ul>
+			<p>&copy; 2016 All Rights Reserved | Website Created by Chess Tutor</p>
+		</footer>
 	</body>
+
 </html>

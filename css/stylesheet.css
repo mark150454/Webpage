@@ -1,0 +1,289 @@
+/* Stylesheet - Henry Wallis: Chess Tutor */
+@import url(https://fonts.googleapis.com/css?family=Hind+Siliguri:400,700);
+@import url(https://fonts.googleapis.com/css?family=Open+Sans:400,700);
+@import url(https://fonts.googleapis.com/css?family=Palanquin+Dark);
+@import url(https://fonts.googleapis.com/css?family=Josefin+Sans:400,700);
+
+*:hover {
+	transition: all 0.3s ease 0s;
+}
+
+body {
+	margin: 0;
+	padding: 0;
+	/* background: #F8F4F1; */
+}
+
+a {
+	text-decoration: none;
+	color: #333;
+	font-family: 'Open Sans', sans-serif;
+	color: #29221f;
+	text-transform: uppercase;
+	font-size: 12px;
+	text-align: center;
+	letter-spacing: 1.2px;
+	text-transform: uppercase;
+	font-weight: 700;
+}
+
+a:hover {
+	color: #08A842;
+}
+/* Button Sets */
+.button {
+
+	color: #29221f;
+	border: 1px solid #000;
+	text-transform: uppercase;
+	font-size: 12px;
+	text-align: center;
+	line-height: 36px;
+	padding: 8px 15px 8px 15px;
+	height: 35px;
+	letter-spacing: 1.2px;
+	text-transform: uppercase;
+	font-weight: 700;
+	transition: all 0.3s ease 0s;
+}
+
+.button:hover {
+	color: #fff;
+	background: #08A842;
+	border: 1px solid #08A842;
+}
+
+.button2 {
+	color: #fff;
+	border: 1px solid #fff;
+	text-transform: uppercase;
+	font-size: 1.3em;
+	text-align: center;
+	line-height: 36px;
+	padding: 4px 15px 4px 15px;
+	height: 35px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	transition: all 0.3s ease 0s;
+}
+
+.button2:hover {
+	color: #fff;
+	background: #08A842;
+	border: 1px solid #08A842;
+}
+
+.buttonText {
+	color: #29221f;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	font-size: 1em;
+	text-decoration: underline;
+	transition: all 0.3s ease 0s;
+	font-weight: bold;
+}
+
+.buttonText:hover {
+	color: #08A842;
+}
+
+/* Button Sets end */
+
+
+
+#logoMain {
+
+	display:block;
+	background-repeat: no-repeat;
+	background-position: center;	
+	background-size: 100%;
+	background-image: url("../img/logo-chess.png");
+	width: 118px;
+	height: 84px;
+
+}
+
+.headerContainer {
+	width: 98%;
+}
+
+.social-Icons {
+	display: inline-block;
+	float: right;
+}
+
+.social-Icon {
+	display: inline-block;
+	margin: -5px 14px;
+}
+
+.social-Icon a {
+	display: block;
+	background-repeat: no-repeat;
+	background-position: center;	
+	background-size: 100%;
+	width: 20px;
+	height: 20px;
+}
+
+#Fb {
+	background-image: url("../img/social/facebook.svg");
+}
+
+#Fb:hover {
+	background-image: url("../img/social/facebook1.png");
+}
+
+#Tw {
+	background-image: url("../img/social/twitter.svg");
+	transition: all 0.3s ease 0s;
+}
+
+#Tw:hover {
+	background-image: url("../img/social/twitter1.png");
+}
+
+#Gp {
+	background-image: url("../img/social/gplus.svg");
+	transition: all 0.3s ease 0s;
+}
+
+#Gp:hover {
+	background-image: url("../img/social/gplus1.png");
+}
+
+.footerNav {
+	display: inline-block;
+}
+
+.footerNav li {
+	display: inline-block;
+	margin: 0 24px;
+	text-transform: uppercase;
+	text-align: center;
+	font-weight: bold;
+
+}
+
+.mainHeadTop {
+	width: 100%;
+	margin: 0;
+	padding: 0 0 25px 0;
+	height: 90px;
+	background-color: #fff;
+	border-bottom: 1px solid #E4E4E4;
+	z-index: 10;
+	position: fixed;
+	top: 0;
+}
+
+#logoMain {
+	position: absolute;
+	left: 47%;
+}
+
+
+
+.navItems ul {
+	margin: 0;
+	width: 200px;
+}
+
+.navItems {
+	position: relative;
+	top: 46px;
+}
+
+.navItems ul li {
+	display: inline;
+	margin-left: 12px;
+}
+
+.headerBanner {
+	background: url(../img/background_banner2.jpg) no-repeat center;
+	background-size: cover;
+	overflow: hidden;
+	position: relative;
+	width: 100%;
+	min-height: 511px;
+	margin: 0 auto;
+	padding: 0;
+	top: 114px;
+	text-align: center;
+
+}
+
+.bannerItems {
+	position: absolute;
+	width: 100%;
+	bottom: 36%;
+	margin: 0 auto;
+	text-align: center;
+	color: #fff;
+}
+
+.bannerItems h1 {
+	line-height: 1.3em;
+	font-size: 50px;
+	font-family: 'Palanquin Dark', sans-serif;
+	letter-spacing: 0.1em;
+	text-transform: uppercase;
+}
+
+.bannerItems .button2 {
+	margin: 14px;
+}
+
+.bannerButton {
+	position: relative;
+	right: 19px;
+}
+
+.wrapper {
+	margin: 114px auto;
+    background: #fff;
+    text-align: center;
+    height: 100%;
+}
+
+
+.textSection {
+	position: relative;
+	top: 36%;
+	padding: 50px 0 90px 0;
+	max-width: 900px;
+	margin: 0 auto;
+}
+
+.textSection h3 {
+	color: #333;
+	font-family: 'Josefin Sans', sans-serif;
+	line-height: 1.3em;
+	font-size: 25px;
+	margin: 0 0 20px 0;
+}
+
+.textSection a {
+	color: #333;
+	position: relative;
+	left: -3px;
+	font-size: 12px;
+}
+
+h2 {
+	text-transform: uppercase;
+	font-family: 'Josefin Sans', sans-serif;
+	color: #222;
+	font-size: 25px;
+}
+
+footer {
+	height: 9px;
+	position: relative;
+
+	border-top: 1px solid #E4E4E4;
+	text-align: center;
+	background: #fff;
+}
+
+
