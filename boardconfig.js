@@ -83,11 +83,13 @@ var init = function () {
         // game still on
         else {
             status = moveColor + ' to move';
-
+            if (game.turn() === playerSide) {
             // check?
             if (game.in_check() === true) {
                 status += ', ' + moveColor + ' is in check';
-            } if (game.turn() === playerSide) {
+                console.log('Toggling check');
+                toggleCheck();
+            } 
             console.log('Calling bestMove');
             bestMove();}
 

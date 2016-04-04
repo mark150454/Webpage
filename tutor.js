@@ -1,4 +1,7 @@
 var moveCount = 0;
+var inCheck = false;
+
+
 //Engine has finished calculating
 var onReady = function (moves) {
 
@@ -6,11 +9,13 @@ var onReady = function (moves) {
         beginOutput(response_startMove());
         return;
     }
+    
+    if (inCheck){
+        beginOutput(response_check(moves));
+    };
 
     //Take with your X or move your X to a better position
-    beginOutput("You should move your " + modePiece(moves));
-
-
+    //beginOutput("You should move your " + modePiece(moves));
 
 };
 
@@ -29,6 +34,9 @@ function beginOutput(response) {
     setTimeout(pushResponse, typeTime, response);
 };
 
+function toggleCheck(){inCheck = !inCheck;
+                      console.log('Check toggled');};
+
 function isTyping() {
     document.getElementById("typing").innerHTML = "Typing...";
 };
@@ -37,7 +45,7 @@ function pushResponse(message) {
     console.log(message);
     document.getElementById("response").innerHTML = message;
     var d = new Date();
-    document.getElementById("typing").innerHTML = "Last message recieved at" + d.toLocaleTimeString();
+    document.getElementById("typing").innerHTML = "Last message recieved at " + d.toLocaleTimeString();
 };
 
 function modePiece(moves) {
@@ -112,4 +120,51 @@ function response_startMove() {
         "You should aim to hold control of the King's and Queen's files 'D' and 'E' during the opening."]
     
     return sentences[Math.floor((Math.random() * 9) + 0)]
+};
+
+function response_check(moves){
+    //PRNBQK
+    var pieces = [false, false, false, false, false, false];
+    var names = ['Pawn', 'Rook', 'Knight', 'Bishop', 'Queen', 'King']
+    var candidatePieces = [];
+    var responseString = '';
+    for (i = 0; i < moves.length; i++)
+        {
+            switch (moves[i]['piece']) {
+                case 'Pawn': pieces[0] = true;
+                    break;
+                case 'Rook': pieces[1] = true;
+                    break;
+                case 'Knight': pieces[2] = true;
+                    break;
+                case 'Bishop': pieces[3] = true;
+                    break;
+                case 'Queen': pieces[4] = true;
+                    break;
+                case 'King': pieces[5] = true;
+            };
+                
+        }
+    for (i = 0; i < pieces.length; i++)
+        {
+            if (pieces[i] == true)
+                candidatePieces.push(names[i]);
+        }
+    
+    for (i = 0; i < candidatePieces.length; i++){
+        if (i == candidatePieces.length - 1)
+            responseString = responseString + ((candidatePieces.length > 1) ? ' or ' + candidatePieces[i] : candidatePieces[i]);
+        else
+            
+            responseString = ((i == 0) ? candidatePieces[i] : responseString + ', ' + candidatePieces[i]);
+    }
+    
+    toggleCheck();
+    
+    var suggestions = ['The pieces you can move to stop the check are: ', 
+                       'You can stop the check by moving your ', 
+                      'The best move to get out of check involves your ', 
+                      'You may move any of the pieces '];
+    
+    return suggestions[Math.floor((Math.random() * 3) + 0)] + responseString;
 };
