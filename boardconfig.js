@@ -9,20 +9,20 @@ playerSide = 'w';
 var engineMessages = [""];
 var depthResults = [""];
 
-var moves = [new moveData("","","","")];
+var moves = [new moveData("", "", "", "")];
 
 $(document).ready(function () {
     playerTurn = (playerSide == 'w') ? true : false;
     init();
-    
+
 });
 
 var init = function () {
-    var board,
-        game = new Chess(),
-        statusEl = $('#status'),
-        fenEl = $('#fen'),
-        pgnEl = $('#pgn');
+    var board
+        , game = new Chess()
+        , statusEl = $('#status')
+        , fenEl = $('#fen')
+        , pgnEl = $('#pgn');
 
     // do not pick up pieces if the game is over
     // only pick up pieces for the side to move
@@ -34,12 +34,28 @@ var init = function () {
         }
     };
 
+    var removeGreySquares = function () {
+        $('#board .square-55d63').css('background', '');
+    };
+    var greySquare = function (square) {
+        var squareEl = $('#board .square-' + square);
+
+        var background = 'rgba(99, 59, 163, 0.53)';
+        if (squareEl.hasClass('black-3c85d') === true) {
+            background = 'rgba(99, 59, 163, 0.53)';
+        }
+
+        squareEl.css('background', background);
+    };
+
     var onDrop = function (source, target) {
+        removeGreySquares();
+
         // see if the move is legal
         var move = game.move({
-            from: source,
-            to: target,
-            promotion: 'q' // NOTE: always promote to a queen for example simplicity
+            from: source
+            , to: target
+            , promotion: 'q' // NOTE: always promote to a queen for example simplicity
         });
 
         // illegal move
@@ -47,10 +63,32 @@ var init = function () {
             return 'snapback';
         else {
             board1.position(game.fen());
-            
+
         };
 
         updateStatus();
+    };
+
+    var onMouseoverSquare = function (square, piece) {
+        // get list of possible moves for this square
+        var moves = game.moves({
+            square: square
+            , verbose: true
+        });
+
+        // exit if there are no moves available for this square
+        if (moves.length === 0) return;
+
+        // highlight the square they moused over
+        greySquare(square);
+
+        // highlight the possible squares for this piece
+        for (var i = 0; i < moves.length; i++) {
+            greySquare(moves[i].to);
+        }
+    };
+    var onMouseoutSquare = function (square, piece) {
+        removeGreySquares();
     };
 
     // update the board position after the piece snap 
@@ -68,7 +106,7 @@ var init = function () {
         } else {
             //Increment tutor's move count
             movePlus();
-               }
+        }
 
         // checkmate?
         if (game.in_checkmate() === true) {
@@ -84,15 +122,16 @@ var init = function () {
         else {
             status = moveColor + ' to move';
             if (game.turn() === playerSide) {
-            // check?
-            if (game.in_check() === true) {
-                status += ', ' + moveColor + ' is in check';
-                console.log('User is in check');
-                toggleCheck(true);
-                console.log('Check value: ' + inCheck ? 'true' : 'false');
-            } 
-            console.log('Calling bestMove');
-            bestMove();}
+                // check?
+                if (game.in_check() === true) {
+                    status += ', ' + moveColor + ' is in check';
+                    console.log('User is in check');
+                    toggleCheck(true);
+                    console.log('Check value: ' + inCheck ? 'true' : 'false');
+                }
+                console.log('Calling bestMove');
+                bestMove();
+            }
 
         }
 
@@ -105,11 +144,13 @@ var init = function () {
     };
 
     var cfg = {
-        draggable: true,
-        position: 'start',
-        onDragStart: onDragStart,
-        onDrop: onDrop,
-        onSnapEnd: onSnapEnd
+        draggable: true
+        , position: 'start'
+        , onDragStart: onDragStart
+        , onDrop: onDrop
+        , onMouseoutSquare: onMouseoutSquare
+        , onMouseoverSquare: onMouseoverSquare
+        , onSnapEnd: onSnapEnd
     };
     board1 = ChessBoard('board', cfg);
 
@@ -118,8 +159,7 @@ var init = function () {
 }; // end init()
 
 //Move data object template
-function moveData(squareFrom, squareTo, movingPiece, takenPiece)
-{
+function moveData(squareFrom, squareTo, movingPiece, takenPiece) {
     this.from = squareFrom;
     this.to = squareTo;
     this.piece = movingPiece;
@@ -138,78 +178,79 @@ function bestMove() {
 //Message from the engine
 engine.onmessage = function (event) {
     //Only advise on white's turn
-    if (playerTurn){
+    if (playerTurn) {
         //When the engine outputs 'bestmove' the search has finished
-        if (String(event.data).substring(0,8) == 'bestmove'){
+        if (String(event.data).substring(0, 8) == 'bestmove') {
             console.log('FINISHED');
             formatResults();
             //Initialise the tutor
             onReady(moves);
-            } 
-        else {
+        } else {
             engineMessages.push(String(event.data).split(' pv')[1]);
-            
+
         }
     };
 };
 
 //When the engine has finished outputting
 function formatResults() {
-    
+
     //Get the results from each depth
     for (i = 0; i < 10; i++) {
         if (engineMessages[i] != null) {
             depthResults.push(engineMessages[i].split("\u0020")[1]);
         }
     }
-    
+
     moves = [];
     engineMessages = [];
     var positions = board1.position();
     for (i = 0; i < depthResults.length; i++) {
         console.log("Depth " + i + ": " + depthResults[i]);
-        
+
         //If taking a piece in this move
-        if(positions.hasOwnProperty(depthResults[i].substring(2, 4))) {
-        moves.push(new moveData(depthResults[i].substring(0,2), depthResults[i].substring(2, 4), pieceName(positions[depthResults[i].substring(0,2)]), pieceName(positions[depthResults[i].substring(2, 4)])))
-        
-        // No pieces being taken
-        } else { 
-            moves.push(new moveData(depthResults[i].substring(0,2), depthResults[i].substring(2, 4), pieceName(positions[depthResults[i].substring(0,2)]), "NONE"))
+        if (positions.hasOwnProperty(depthResults[i].substring(2, 4))) {
+            moves.push(new moveData(depthResults[i].substring(0, 2), depthResults[i].substring(2, 4), pieceName(positions[depthResults[i].substring(0, 2)]), pieceName(positions[depthResults[i].substring(2, 4)])))
+
+            // No pieces being taken
+        } else {
+            moves.push(new moveData(depthResults[i].substring(0, 2), depthResults[i].substring(2, 4), pieceName(positions[depthResults[i].substring(0, 2)]), "NONE"))
         }
     }
-    
+
 };
 
 //Translation
-function pieceName(text){
+function pieceName(text) {
     var piece = text.substring(1, 2);
-    switch(piece) {
-        case 'P':
-            return 'Pawn';
-            break;
-        case 'K':
-            return 'King';
-            break;
-        case 'Q':
-            return 'Queen';
-            break;
-        case 'R':
-            return 'Rook';
-            break;
-        case 'N':
-            return 'Knight';
-            break;
-        case 'B':
-            return 'Bishop';
-            break;
+    switch (piece) {
+    case 'P':
+        return 'Pawn';
+        break;
+    case 'K':
+        return 'King';
+        break;
+    case 'Q':
+        return 'Queen';
+        break;
+    case 'R':
+        return 'Rook';
+        break;
+    case 'N':
+        return 'Knight';
+        break;
+    case 'B':
+        return 'Bishop';
+        break;
     }
 };
 
-function printMoves(){
-    for (i = 0; i < moves.length; i++){
+function printMoves() {
+    for (i = 0; i < moves.length; i++) {
         console.log(moves[i]);
     }
 };
 
-function getMoves(){return moves;};
+function getMoves() {
+    return moves;
+};
