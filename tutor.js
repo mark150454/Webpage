@@ -19,8 +19,18 @@ var onReady = function (moves) {
         return;
     };
 
-    beginOutput('RESPONSE NOT FORMULATED');
+    
+    
     //if you can take a piece, make suggestions
+    var possibleTakes = getCandidates('taken', moves);
+    if (getCandidates(possibleTakes, moves).length > 0)
+        {
+            
+        }
+    
+    beginOutput('RESPONSE NOT FORMULATED');
+    
+    
     //
 };
 
@@ -131,33 +141,6 @@ function response_startMove() {
 
 function response_check(moves) {
     console.log("Response check called");
-    //PRNBQK
-    /*var pieces = [false, false, false, false, false, false];
-    
-    var candidatePieces = [];
-    var responseString = '';
-    for (i = 0; i < moves.length; i++)
-        {
-            switch (moves[i]['piece']) {
-                case 'Pawn': pieces[0] = true;
-                    break;
-                case 'Rook': pieces[1] = true;
-                    break;
-                case 'Knight': pieces[2] = true;
-                    break;
-                case 'Bishop': pieces[3] = true;
-                    break;
-                case 'Queen': pieces[4] = true;
-                    break;
-                case 'King': pieces[5] = true;
-            };
-                
-        }
-    for (i = 0; i < pieces.length; i++)
-        {
-            if (pieces[i] == true)
-                candidatePieces.push(names[i]);
-        }*/
 
     var candidatePieces = getCandidates('piece', moves);
 
