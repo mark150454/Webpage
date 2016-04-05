@@ -181,7 +181,7 @@ engine.onmessage = function (event) {
     if (playerTurn) {
         //When the engine outputs 'bestmove' the search has finished
         if (String(event.data).substring(0, 8) == 'bestmove') {
-            console.log('FINISHED');
+            console.log('Finished thinking!');
             formatResults();
             //Initialise the tutor
             onReady(moves);
@@ -206,7 +206,6 @@ function formatResults() {
     engineMessages = [];
     var positions = board1.position();
     for (i = 0; i < depthResults.length; i++) {
-        console.log("Depth " + i + ": " + depthResults[i]);
 
         //If taking a piece in this move
         if (positions.hasOwnProperty(depthResults[i].substring(2, 4))) {

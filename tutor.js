@@ -19,32 +19,14 @@ var onReady = function (moves) {
         return;
     };
 
-    
-    
     //if you can take a piece, make suggestions
     var possibleTakes = getCandidates('taken', moves);
-    //console.log("Queen: " + possibleTakes[0]);
-    console.log(possibleTakes.length);
-    if (possibleTakes.length > 0)
-        {
-            var suggestions = ['You can take their &p1'
-                      , 'Consider taking their &p1'];
+    if (possibleTakes.length > 0) {
+        beginOutput(response_canTake(possibleTakes));
+        return;
+    }
 
-            //var responseStart = suggestions[Math.floor((Math.random() * 2) + 0)];
-            //responseStart = responseStart.replace("&p1", possibleTakes[0]);
-
-            if (possibleTakes.length == 1)
-                {
-                    //responseStart = responseStart + possibleTakes[0] + ".";
-                    //beginOutput(responseStart);
-                    beginOutput(buildSentence(suggestions, possibleTakes[0]));
-                }
-            
-        } else
-            beginOutput('RESPONSE NOT FORMULATED');
-    
-    
-    //
+    beginOutput('RESPONSE NOT FORMULATED');
 };
 
 var movePlus = function () {
@@ -52,27 +34,26 @@ var movePlus = function () {
     console.log(moveCount);
 };
 
+function buildSentence(sentenceArray, targetPiece) {
+    //Select a random sentence structure
+    var suggestion = sentenceArray[Math.floor((Math.random() * (sentenceArray.length - 1))+ 0)];
+    //Add contextual information to the string
+    suggestion = suggestion.replace('&p1', targetPiece);
+    return suggestion;
+};
+
 function beginOutput(response) {
-    //60ms per letter
+    //40ms per letter
     var typeTime = response.length * 40;
-    if (typeTime < 1500) {
-        typeTime = 1500;
-    }
-    isTyping();
+    if (typeTime < 1500) {typeTime = 1500;}
+    document.getElementById("typing").innerHTML = "Typing...";
+    //Time for typing
     setTimeout(pushResponse, typeTime, response);
 };
 
-function toggleCheck(value) {
-    inCheck = value;
-    console.log('Check toggled');
-};
-
-function isTyping() {
-    document.getElementById("typing").innerHTML = "Typing...";
-};
+function toggleCheck(value) {inCheck = value;};
 
 function pushResponse(message) {
-    console.log(message);
     document.getElementById("response").innerHTML = message;
     var d = new Date();
     document.getElementById("typing").innerHTML = "Last message recieved at " + d.toLocaleTimeString();
@@ -80,7 +61,6 @@ function pushResponse(message) {
 
 function modePiece(moves) {
     //PRNBQK
-    console.log("doing");
     var pieceCount = [0, 0, 0, 0, 0, 0];
     for (i = 0; i < moves.length; i++) {
         switch (moves[i]['from']) {
@@ -139,51 +119,83 @@ function response_startMove() {
 
     var sentences = [
         "In the opening, you want to try and maximise your influence on the center of the board."
+        
         , "You should try and get pieces off the back row to try and control the center of the board."
+        
         , "You may want to start by moving either a pawn or a knight towards the middle of the board."
+        
         , "There are only two pieces you can move in the beginning, the knight or the pawn."
+        
         , "Controlling the center of the board is critical in the opening moves to give you a more secure mid-game."
+        
         , "Try to attack middle squares with your pieces, this will secure you with a better middle game."
+        
         , "The more influence you have on the center of the board, the more you restrict your opponent's moves."
+        
         , "Each piece has its highest possible range of candidate moves in the center of the board. You should aim to have them there."
+        
         , "It is easier to secure checks if you have your pieces securely rooted in the center of the board."
+        
         , "You should aim to hold control of the King's and Queen's files 'D' and 'E' during the opening."]
 
     return sentences[Math.floor((Math.random() * 9) + 0)]
 };
 
 function response_check(moves) {
-    console.log("Response check called");
-
     var candidatePieces = getCandidates('piece', moves);
-
     var responseString = '';
-
+    
+    //Deal with multiple piece selections
     for (i = 0; i < candidatePieces.length; i++) {
         if (i == candidatePieces.length - 1) {
             responseString = responseString + ((candidatePieces.length > 1) ? ' or ' + candidatePieces[i] : candidatePieces[i]);
         } else {
-
             responseString = ((i < candidatePieces.length - 1) ? candidatePieces[i] : responseString + ', ' + candidatePieces[i]);
         }
 
     }
 
-    toggleCheck();
+    toggleCheck(false);
 
     var suggestions = ['Moving &p1 will prevent check'
-                       , 'You can stop check by moving your &p1'
-                      , 'The best move to get out of check involves your %p1 '
-                      , 'You may move any of the pieces &p1'
-                      , 'Your best bet is probably to put &p1 in the way of your King'
-                      , 'Try moving &p1 to prevent check'];
+                       
+        , 'You can stop check by moving your &p1'
+                      
+        , 'The best move to get out of check involves your &p1 '
+                      
+        , 'You may move your &p1'
+                      
+        , 'Your best bet is to move the &p1'
+                      
+        , 'Try moving your &p1 to remove check'];
 
     return buildSentence(suggestions, responseString);
-    //var suggestions = suggestions.replace("&p1", responseString);
-    //return suggestions[Math.floor((Math.random() * 3) + 0)];
+
+};
+
+function response_canTake(possibleTakes) {
+    var suggestions = ['You can take their &p1'
+                      
+        , 'Consider taking their &p1'];
+    //Deal with multiple piece selections
+    if (possibleTakes.length == 1) {
+        return buildSentence(suggestions, possibleTakes[0]);
+    } else if (possibleTakes.length >= 2) {
+        var endofSuggestion = possibleTakes[0] + " or " + possibleTakes[1] + ".";
+        if (possibleTakes.length > 2) {
+            for (i = 2; i < possibleTakes.length; i++) {
+                endofSuggestion = possibleTakes[i] + ", " + endofSuggestion;
+            }
+        }
+        console.log(endofSuggestion);
+        return buildSentence(suggestions, endofSuggestion);
+    }
+
 };
 
 function getCandidates(attribute, moves) {
+    
+    //Get the names of all the pieces mentioned in a specific attribute
     var candidatePieces = [];
     var pieces = [false, false, false, false, false, false];
     for (i = 0; i < moves.length; i++) {
@@ -211,18 +223,8 @@ function getCandidates(attribute, moves) {
 
     }
     for (i = 0; i < pieces.length; i++) {
-        
         if (pieces[i] == true)
             candidatePieces.push(names[i]);
     }
-    
-    
-    console.log("From within getCandidates: " + candidatePieces[0]);
     return candidatePieces;
-};
-
-function buildSentence(sentenceArray, targetPiece) {
-    var suggestions = sentenceArray[Math.floor((Math.random() * sentenceArray.length - 1) + 0)]
-    suggestions = suggestions.replace("&p1", targetPiece);
-    return suggestions;
 };
