@@ -23,12 +23,19 @@ var onReady = function (moves) {
     
     //if you can take a piece, make suggestions
     var possibleTakes = getCandidates('taken', moves);
-    if (getCandidates(possibleTakes, moves).length > 0)
+    //console.log("Queen: " + possibleTakes[0]);
+    console.log(possibleTakes.length);
+    if (possibleTakes.length > 0)
         {
+            responseStart = "You can take their ";
+            if (possibleTakes.length == 1)
+                {
+                    responseStart = responseStart + possibleTakes[0] + ".";
+                    beginOutput(responseStart);
+                }
             
-        }
-    
-    beginOutput('RESPONSE NOT FORMULATED');
+        } else
+            beginOutput('RESPONSE NOT FORMULATED');
     
     
     //
@@ -185,6 +192,7 @@ function getCandidates(attribute, moves) {
             break;
         case 'Queen':
             pieces[4] = true;
+            console.log("FOUND THE QUEEN");
             break;
         case 'King':
             pieces[5] = true;
@@ -193,8 +201,12 @@ function getCandidates(attribute, moves) {
 
     }
     for (i = 0; i < pieces.length; i++) {
+        
         if (pieces[i] == true)
             candidatePieces.push(names[i]);
     }
+    
+    
+    console.log("From within getCandidates: " + candidatePieces[0]);
     return candidatePieces;
 };
