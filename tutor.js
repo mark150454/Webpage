@@ -27,11 +27,17 @@ var onReady = function (moves) {
     console.log(possibleTakes.length);
     if (possibleTakes.length > 0)
         {
-            responseStart = "You can take their ";
+            var suggestions = ['You can take their &p1'
+                      , 'Consider taking their &p1'];
+
+            //var responseStart = suggestions[Math.floor((Math.random() * 2) + 0)];
+            //responseStart = responseStart.replace("&p1", possibleTakes[0]);
+
             if (possibleTakes.length == 1)
                 {
-                    responseStart = responseStart + possibleTakes[0] + ".";
-                    beginOutput(responseStart);
+                    //responseStart = responseStart + possibleTakes[0] + ".";
+                    //beginOutput(responseStart);
+                    beginOutput(buildSentence(suggestions, possibleTakes[0]));
                 }
             
         } else
@@ -165,12 +171,16 @@ function response_check(moves) {
 
     toggleCheck();
 
-    var suggestions = ['The pieces you can move to stop the check are: '
-                       , 'You can stop the check by moving your '
-                      , 'The best move to get out of check involves your '
-                      , 'You may move any of the pieces '];
+    var suggestions = ['Moving &p1 will prevent check'
+                       , 'You can stop check by moving your &p1'
+                      , 'The best move to get out of check involves your %p1 '
+                      , 'You may move any of the pieces &p1'
+                      , 'Your best bet is probably to put &p1 in the way of your King'
+                      , 'Try moving &p1 to prevent check'];
 
-    return suggestions[Math.floor((Math.random() * 3) + 0)] + responseString;
+    return buildSentence(suggestions, responseString);
+    //var suggestions = suggestions.replace("&p1", responseString);
+    //return suggestions[Math.floor((Math.random() * 3) + 0)];
 };
 
 function getCandidates(attribute, moves) {
@@ -209,4 +219,10 @@ function getCandidates(attribute, moves) {
     
     console.log("From within getCandidates: " + candidatePieces[0]);
     return candidatePieces;
+};
+
+function buildSentence(sentenceArray, targetPiece) {
+    var suggestions = sentenceArray[Math.floor((Math.random() * sentenceArray.length - 1) + 0)]
+    suggestions = suggestions.replace("&p1", targetPiece);
+    return suggestions;
 };
