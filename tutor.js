@@ -6,25 +6,32 @@ var names = ['Pawn', 'Rook', 'Knight', 'Bishop', 'Queen', 'King']
 //Engine has finished calculating
 var onReady = function (moves) {
 
+    //If it is the first move
     if (moveCount == 1) {
         beginOutput(response_startMove());
         return;
     }
 
-    console.log(inCheck ? 'true' : 'false');
-    if (inCheck) {
-        console.log('check condition succeeded');
-        beginOutput(response_check(moves));
-        toggleCheck(false);
-        return;
-    };
-
-    //if you can take a piece, make suggestions
+    //if you can take a piece
     var possibleTakes = getCandidates('taken', moves);
     if (possibleTakes.length > 0) {
         beginOutput(response_canTake(possibleTakes));
         return;
     }
+
+    //If the move is to develop a piece, and it is in the early game
+    var element = getPart(moves[moves.length - 1], 'from', 'rank');
+    if ((moveCount < 8) && ((element == '1') && getPlayerSide() == 'w') || ((element == '8') && getPlayerSide() == 'b')) {
+        beginOutput(buildSentence(['Move a &p1 off the back row.', 'Develop a &p1 off of the back rank', 'You should get a &p1 into the battle'], moves[moves.length - 1]['piece']));
+        return;
+    }
+
+    //If in check
+    if (inCheck) {
+        beginOutput(response_check(moves));
+        toggleCheck(false);
+        return;
+    };
 
     beginOutput('RESPONSE NOT FORMULATED');
 };
@@ -36,7 +43,7 @@ var movePlus = function () {
 
 function buildSentence(sentenceArray, targetPiece) {
     //Select a random sentence structure
-    var suggestion = sentenceArray[Math.floor((Math.random() * (sentenceArray.length - 1))+ 0)];
+    var suggestion = sentenceArray[Math.floor((Math.random() * (sentenceArray.length - 1)) + 0)];
     //Add contextual information to the string
     suggestion = suggestion.replace('&p1', targetPiece);
     return suggestion;
@@ -45,13 +52,17 @@ function buildSentence(sentenceArray, targetPiece) {
 function beginOutput(response) {
     //40ms per letter
     var typeTime = response.length * 40;
-    if (typeTime < 1500) {typeTime = 1500;}
+    if (typeTime < 1500) {
+        typeTime = 1500;
+    }
     document.getElementById("typing").innerHTML = "Typing...";
     //Time for typing
     setTimeout(pushResponse, typeTime, response);
 };
 
-function toggleCheck(value) {inCheck = value;};
+function toggleCheck(value) {
+    inCheck = value;
+};
 
 function pushResponse(message) {
     document.getElementById("response").innerHTML = message;
@@ -119,22 +130,31 @@ function response_startMove() {
 
     var sentences = [
         "In the opening, you want to try and maximise your influence on the center of the board."
+
         
         , "You should try and get pieces off the back row to try and control the center of the board."
+
         
         , "You may want to start by moving either a pawn or a knight towards the middle of the board."
+
         
         , "There are only two pieces you can move in the beginning, the knight or the pawn."
+
         
         , "Controlling the center of the board is critical in the opening moves to give you a more secure mid-game."
+
         
         , "Try to attack middle squares with your pieces, this will secure you with a better middle game."
+
         
         , "The more influence you have on the center of the board, the more you restrict your opponent's moves."
+
         
         , "Each piece has its highest possible range of candidate moves in the center of the board. You should aim to have them there."
+
         
         , "It is easier to secure checks if you have your pieces securely rooted in the center of the board."
+
         
         , "You should aim to hold control of the King's and Queen's files 'D' and 'E' during the opening."]
 
@@ -144,7 +164,7 @@ function response_startMove() {
 function response_check(moves) {
     var candidatePieces = getCandidates('piece', moves);
     var responseString = '';
-    
+
     //Deal with multiple piece selections
     for (i = 0; i < candidatePieces.length; i++) {
         if (i == candidatePieces.length - 1) {
@@ -158,15 +178,20 @@ function response_check(moves) {
     toggleCheck(false);
 
     var suggestions = ['Moving &p1 will prevent check'
-                       
+
+        
         , 'You can stop check by moving your &p1'
-                      
+
+        
         , 'The best move to get out of check involves your &p1 '
-                      
+
+        
         , 'You may move your &p1'
-                      
+
+        
         , 'Your best bet is to move the &p1'
-                      
+
+        
         , 'Try moving your &p1 to remove check'];
 
     return buildSentence(suggestions, responseString);
@@ -175,7 +200,8 @@ function response_check(moves) {
 
 function response_canTake(possibleTakes) {
     var suggestions = ['You can take their &p1'
-                      
+
+        
         , 'Consider taking their &p1'];
     //Deal with multiple piece selections
     if (possibleTakes.length == 1) {
@@ -194,7 +220,7 @@ function response_canTake(possibleTakes) {
 };
 
 function getCandidates(attribute, moves) {
-    
+
     //Get the names of all the pieces mentioned in a specific attribute
     var candidatePieces = [];
     var pieces = [false, false, false, false, false, false];
@@ -228,3 +254,11 @@ function getCandidates(attribute, moves) {
     }
     return candidatePieces;
 };
+
+//Get the value of a cell e.g G5 File = G, Rank = 5
+function getPart(move, toFrom, axis) {
+    if (axis == 'rank')
+        return move[toFrom].substr(1, 2);
+    if (axis == 'file')
+        return move[toFrom].substr(0, 1);
+}

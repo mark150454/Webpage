@@ -17,6 +17,7 @@ $(document).ready(function () {
 
 });
 
+//Chessboard initialisation
 var init = function () {
     var board
         , game = new Chess()
@@ -253,3 +254,7 @@ function printMoves() {
 function getMoves() {
     return moves;
 };
+
+function getPlayerSide() {
+    return playerSide;
+}
