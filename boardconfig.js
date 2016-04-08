@@ -17,7 +17,6 @@ $(document).ready(function () {
 
 });
 
-//Chessboard initialisation
 var init = function () {
     var board
         , game = new Chess()
@@ -35,6 +34,19 @@ var init = function () {
         }
     };
 
+	//Making black choose a random legal move to make
+	var makeRandomMove = function() {
+  var possibleMoves = game.moves();
+
+  // game over
+  if (possibleMoves.length === 0) return;
+
+  var randomIndex = Math.floor(Math.random() * possibleMoves.length);
+  game.move(possibleMoves[randomIndex]);
+  board1.position(game.fen());
+  updateStatus();
+};
+	
     var removeGreySquares = function () {
         $('#board .square-55d63').css('background', '');
     };
@@ -57,17 +69,16 @@ var init = function () {
             from: source
             , to: target
             , promotion: 'q' // NOTE: always promote to a queen for example simplicity
-        });
+		});
 
         // illegal move
         if (move === null)
             return 'snapback';
         else {
             board1.position(game.fen());
-
         };
-
-        updateStatus();
+		updateStatus();
+		window.setTimeout(makeRandomMove, 250);    //Computer makes random move for black   
     };
 
     var onMouseoverSquare = function (square, piece) {
@@ -140,8 +151,6 @@ var init = function () {
         fenEl.html(game.fen());
         pgnEl.html(game.pgn());
         playerTurn = (game.turn() == playerSide) ? true : false;
-
-
     };
 
     var cfg = {
@@ -182,7 +191,7 @@ engine.onmessage = function (event) {
     if (playerTurn) {
         //When the engine outputs 'bestmove' the search has finished
         if (String(event.data).substring(0, 8) == 'bestmove') {
-            console.log('Finished thinking!');
+            console.log('FINISHED');
             formatResults();
             //Initialise the tutor
             onReady(moves);
@@ -207,6 +216,7 @@ function formatResults() {
     engineMessages = [];
     var positions = board1.position();
     for (i = 0; i < depthResults.length; i++) {
+        console.log("Depth " + i + ": " + depthResults[i]);
 
         //If taking a piece in this move
         if (positions.hasOwnProperty(depthResults[i].substring(2, 4))) {
@@ -254,7 +264,3 @@ function printMoves() {
 function getMoves() {
     return moves;
 };
-
-function getPlayerSide() {
-    return playerSide;
-}
